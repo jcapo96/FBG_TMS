@@ -7,8 +7,8 @@ import datetime
 import xlrd
 import sys
 sys.path.insert(1, '/afs/cern.ch/user/j/jcapotor/FBGana/ana_tools')
-import manage_data, add_data
-import getters
+import getters, setters
+import manage_data
 
 def gaussian(x, H, A, x0, sigma):
     return H + A * np.exp(-(x - x0) ** 2 / (2 * sigma ** 2))
@@ -105,7 +105,7 @@ def process_spectrums(
             persistentRead = False
             data = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in data.items() ]))
             data["Timestamp"] = data["Timestamp"].apply(manage_data.time_to_seconds)
-            data = add_data.add_polarisation_mask(data)
+            data = setters.add_polarisation_mask(data)
             data_p = data.loc[(data["PolMask"] == "p")].reset_index(drop=True)
             data_s = data.loc[(data["PolMask"] == "s")].reset_index(drop=True)
             n_file = filename.split("_")[1].split(".")[0]
@@ -142,7 +142,7 @@ def process_peaks(
         chunk = chunk.reset_index(drop=True)
         # chunk_p, chunk_s = manage_data.process_data(chunk)
         chunk["Timestamp"] = chunk["Timestamp"].apply(manage_data.time_to_seconds)
-        chunk = add_data.add_polarisation_mask(chunk)
+        chunk = setters.add_polarisation_mask(chunk)
         chunk_p = chunk.loc[(chunk["PolMask"]=="p")].reset_index(drop=True)
         chunk_s = chunk.loc[(chunk["PolMask"]=="s")].reset_index(drop=True)
         n_file = filename.split("_")[1].split(".")[0]
