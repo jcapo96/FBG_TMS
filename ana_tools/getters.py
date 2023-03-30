@@ -1,11 +1,8 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import datetime
-import pytz
 import h5py
 from tqdm import tqdm
-import setters
+import json
 
 def get_raw_data(
     path_to_split="",
@@ -34,6 +31,11 @@ def get_processed_data(
 ):
     data = pd.read_hdf(path_to_split+"matched.h5", key="data")
     return data
+
+def get_plateaus():
+    f = open("plateaus.json")
+    plateaus = json.load(f)
+    return plateaus
 
 def downsample_data(df, bin=1):
     df["Timestamp"] = df["Timestamp"].apply(lambda x: np.round(x/bin, 0))

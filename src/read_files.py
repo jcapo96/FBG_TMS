@@ -6,9 +6,8 @@ from iminuit.cost import LeastSquares
 import datetime
 import xlrd
 import sys
-sys.path.insert(1, '/afs/cern.ch/user/j/jcapotor/FBGana/ana_tools')
+sys.path.insert(1, '/afs/cern.ch/user/j/jcapotor/FBG_TMS/ana_tools')
 import getters, setters, utils
-import manage_data
 
 def gaussian(x, H, A, x0, sigma):
     return H + A * np.exp(-(x - x0) ** 2 / (2 * sigma ** 2))
@@ -58,6 +57,8 @@ def process_spectrums(
                 if current_channel == channels[0]:
                     data["Timestamp"].append(sweep["Timestamp"])
                     data["Baseline"].append(np.mean(sweep["Data"][0:4000]))
+                if cnt % 1000 == 0:
+                    print(sweep)
                 peaks_index, _ = find_peaks(sweep["Data"], height=threshold)
                 if len(peaks_index) != n_sensors[current_channel]:
                     peaks_index = []
@@ -104,7 +105,7 @@ def process_spectrums(
             print("Finished at event: " + str(cnt))
             persistentRead = False
             data = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in data.items() ]))
-            data["Timestamp"] = data["Timestamp"].apply(manage_data.time_to_seconds)
+            data["Timestamp"] = data["Timestamp"].apply(utils.time_to_seconds)
             data = setters.add_polarisation_mask(data)
             data_p = data.loc[(data["PolMask"] == "p")].reset_index(drop=True)
             data_s = data.loc[(data["PolMask"] == "s")].reset_index(drop=True)
@@ -170,7 +171,7 @@ def process_temperature(
         except:
             continue
     data["Timestamp"] = data["Date"]+ "-" +data["Time"]
-    data["Timestamp"] = data["Timestamp"].apply(manage_data.time_to_seconds)
+    data["Timestamp"] = data["Timestamp"].apply(utils.time_to_seconds)
     n_file = filename.split("_")[1].split(".")[0]
     data.to_hdf(path_or_buf=path_to_save_folder+"temperature.h5", key="Temp"+str(n_file))
 
@@ -181,6 +182,6 @@ def process_humidity(
     data = pd.read_csv(path_to_data+filename, sep=";", skiprows=1, header=None, decimal=",").astype(float)
     data.columns = ["Timestamp", "ObRH", "RH", "ObT", "T"]
     data["Timestamp"] = data["Timestamp"].apply(lambda x: str(xlrd.xldate_as_datetime(x, 0).date()) + " " + str(xlrd.xldate_as_datetime(x, 0).time()).split(".")[0])
-    data["Timestamp"] = data["Timestamp"].apply(manage_data.time_to_seconds)
+    data["Timestamp"] = data["Timestamp"].apply(utils.time_to_seconds)
     n_file = filename.split("_")[1].split(".")[0]
     data.to_hdf(path_or_buf=path_to_save_data+"humidity.h5", key="Hum"+n_file)

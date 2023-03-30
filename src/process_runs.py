@@ -44,8 +44,6 @@ list_of_files = pd.read_csv(path_to_data+"list_of_files.txt", header=None, names
 print(list_of_files)
 for index, file in list_of_files.iterrows():
     filename = file["Filename"].lower()
-    if "spectrums" not in filename:
-        continue
     print(filename)
     try:
         if filename.split("_")[0] == "spectrums":
