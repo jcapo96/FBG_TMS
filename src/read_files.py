@@ -7,7 +7,7 @@ import datetime
 import xlrd
 import sys
 sys.path.insert(1, '/afs/cern.ch/user/j/jcapotor/FBGana/ana_tools')
-import getters, setters
+import getters, setters, utils
 import manage_data
 
 def gaussian(x, H, A, x0, sigma):
@@ -78,8 +78,8 @@ def process_spectrums(
                     LSQ = LeastSquares(xdata, ydata, ydata_err, func)
                     m = Minuit(LSQ, H=1e2, A=3e3, x0=sweep["WL"][peak], sigma=4e-2)
                     m.migrad()
-                    fwhm = getters.get_fwhm(sweep, peak, xdata, m, func)
-                    As = getters.get_As(sweep, peak, xdata, m, func)
+                    fwhm = utils.get_fwhm(sweep, peak, xdata, m, func)
+                    As = utils.get_As(sweep, peak, xdata, m, func)
                     if cnt in range(len(channels)):
                         data["Wav"+str(current_channel+1)+"-"+str(current_sens)] = [m.values["x0"]]
                         data["Wav"+str(current_channel+1)+"-"+str(current_sens)+"_FLAG"] = [m.accurate]

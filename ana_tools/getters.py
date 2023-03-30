@@ -1,8 +1,11 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import datetime
+import pytz
 import h5py
 from tqdm import tqdm
+import setters
 
 def get_raw_data(
     path_to_split="",
@@ -32,56 +35,24 @@ def get_processed_data(
     data = pd.read_hdf(path_to_split+"matched.h5", key="data")
     return data
 
-def spectra(s, nu, L):
-    k = s*nu/2
-    num = (np.sinh(L*np.sqrt(s**2 - k**2)))**2
-    den = (np.cosh(L*np.sqrt(s**2 - k**2)))**2 - (s**2)/(k**2)
-    return num/den
-
-def get_fwhm(sweep, peak, xdata, m, func):
-    try:
-        i1 = 0
-        y = sweep["Data"][peak]
-        while y > np.max(func(xdata, m.values["H"], m.values["A"], m.values["x0"], m.values["sigma"]))/2:
-            y = sweep["Data"][peak+i1]
-            i1 += 1
-        i2 = 0
-        y = sweep["Data"][peak]
-        while y > np.max(func(xdata, m.values["H"], m.values["A"], m.values["x0"], m.values["sigma"]))/2:
-            y = sweep["Data"][peak-i2]
-            i2 += 1
-        fwhm = (i1+i2) #in pm
-        return fwhm
-    except:
-        fwhm = 9999
-        return fwhm
-
-def get_As(sweep, peak, xdata, m, func):
-    try:
-        a = 0
-        y = sweep["Data"][peak]
-        while y > np.max(func(xdata, m.values["H"], m.values["A"], m.values["x0"], m.values["sigma"]))/2:
-            y = sweep["Data"][peak+a]
-            a += 1
-        b = 0
-        y = sweep["Data"][peak]
-        while y > np.max(func(xdata, m.values["H"], m.values["A"], m.values["x0"], m.values["sigma"]))/2:
-            y = sweep["Data"][peak-b]
-            b += 1
-        as_50 = a/b
-        a = 0
-        y = sweep["Data"][peak]
-        while y > np.max(func(xdata, m.values["H"], m.values["A"], m.values["x0"], m.values["sigma"]))*0.1:
-            y = sweep["Data"][peak+a]
-            a += 1
-        b = 0
-        y = sweep["Data"][peak]
-        while y > np.max(func(xdata, m.values["H"], m.values["A"], m.values["x0"], m.values["sigma"]))*0.1:
-            y = sweep["Data"][peak-b]
-            b += 1
-        as_10 = a/b
-        As = as_50/as_10
-        return As
-    except:
-        As = 9999
-        return As
+def downsample_data(df, bin=1):
+    df["Timestamp"] = df["Timestamp"].apply(lambda x: np.round(x/bin, 0))
+    downsampled = []
+    unique_times = df["Timestamp"].unique()
+    progress_bar = tqdm(total=len(unique_times), desc="Downsampling data")
+    for time in unique_times:
+        chunk = df.loc[df["Timestamp"] == time]
+        row = {}
+        for col in chunk:
+            if col == "Date" or col=="Time" or col=="Datetime" or col == "PolMask":
+                continue
+            if col == "Timestamp":
+                row[col] = time
+            if col != "Timestamp":
+                row[col] = np.mean(chunk[col])
+                row[col+"_err"] = np.std(chunk[col])
+        downsampled.append(row)
+        progress_bar.update(1)
+    progress_bar.close()
+    downsampled = pd.DataFrame(downsampled)
+    return downsampled
