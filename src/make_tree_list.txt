@@ -1,0 +1,8 @@
+"/eos/user/j/jcapotor/FBGana/camara_climatica/FebruaryRuns/20230220"
+"/eos/user/j/jcapotor/FBGana/camara_climatica/FebruaryRuns/20230221"
+"/eos/user/j/jcapotor/FBGana/camara_climatica/FebruaryRuns/20230222"
+"/eos/user/j/jcapotor/FBGana/camara_climatica/FebruaryRuns/20230223"
+"/eos/user/j/jcapotor/FBGana/camara_climatica/FebruaryRuns/20230224"
+"/eos/user/j/jcapotor/FBGana/camara_climatica/MarchRuns/20230321/"
+"/eos/user/j/jcapotor/FBGana/camara_climatica/MarchRuns/20230322/"
+"/eos/user/j/jcapotor/FBGana/camara_climatica/MarchRuns/20230323/"
