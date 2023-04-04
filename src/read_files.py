@@ -116,8 +116,8 @@ def process_spectrums(
             del data_s["PolMask"]
             data_av = (data_p + data_s)/2
             data_diff = (data_p - data_s)
-            data_p.to_hdf(path_to_save_folder + "spectrums.h5", key="Av"+n_file)
-            data_s.to_hdf(path_to_save_folder + "spectrums.h5", key="Diff"+n_file)
+            data_av.to_hdf(path_to_save_folder + "spectrums.h5", key="Av"+n_file)
+            data_diff.to_hdf(path_to_save_folder + "spectrums.h5", key="Diff"+n_file)
             print("Spectrums Saved")
 
 def process_peaks(

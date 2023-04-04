@@ -4,7 +4,7 @@ notify_user             = jcapotor@cern.ch
 # Never, Error, Complete, Always
 notification            = Always
 universe       		= vanilla
-executable		= /afs/cern.ch/work/j/jcapotor/FBG_TMS/condor/proccess_runs.sh
+executable		= /afs/cern.ch/user/j/jcapotor/FBG_TMS/condor/process_runs.sh
 output  		= log_$(ClusterId).$(ProcId).out
 error   		= log_$(ClusterId).$(ProcId).error
 log 			= log_$(ClusterId).$(ProcId).log 
@@ -12,14 +12,12 @@ getenv 			= True
 ## Force HTCondor not to use shared filesystem
 should_transfer_files 	= YES
 when_to_transfer_output = ON_SUCCESS
-#transfer_output_files   = ""
-initialdir 		= /afs/cern.ch/work/j/jcapotor/FBG_TMS/condor
-#transfer_input_files 	= ""
+initialdir 		= /afs/cern.ch/user/j/jcapotor/FBG_TMS/condor
 requirements            = (Arch == "INTEL" && OpSys == "LINUX") || (Arch == "X86_64" && OpSys =="LINUX" )
-priority 		= 20
+priority 		= 10
 request_memory          = 1700MB
 request_disk            = 10 GB
-+JobFlavour             = "tomorrow"
++JobFlavour             = "espresso"
 +MaxRuntime 		= 24*3600
 RequestCpus            = 1
-queue arguments from /afs/cern.ch/work/j/jcapotor/FBG_TMS/condor/proccess_runs.txt
+queue arguments from process_runs.txt

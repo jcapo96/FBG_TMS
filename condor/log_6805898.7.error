@@ -1,0 +1,9 @@
+cp: falta el fichero de destino después de «/afs/cern.ch/user/j/jcapotor/FBG_TMS/venv»
+Pruebe 'cp --help' para más información.
+condor_exec.exe: línea 5: venv/bin/activate: No existe el fichero o el directorio
+cp: falta el fichero de destino después de «/afs/cern.ch/user/j/jcapotor/FBG_TMS/src»
+Pruebe 'cp --help' para más información.
+cp: falta el fichero de destino después de «/afs/cern.ch/user/j/jcapotor/FBG_TMS/ana_tools»
+Pruebe 'cp --help' para más información.
+condor_exec.exe: línea 8: cd: src: No existe el fichero o el directorio
+python3: can't open file 'process_runs.py': [Errno 2] No such file or directory

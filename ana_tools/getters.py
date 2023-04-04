@@ -4,6 +4,7 @@ import h5py
 from tqdm import tqdm
 import json
 
+#function to get the raw data processed into .hdf5 files 
 def get_raw_data(
     path_to_split="",
     filetype = "peaks",
@@ -26,17 +27,20 @@ def get_raw_data(
     progress_bar.close()
     return joint_data
 
+#function to get the matched data from .hdf5 files
 def get_processed_data(
     path_to_split=""
 ):
     data = pd.read_hdf(path_to_split+"matched.h5", key="data")
     return data
 
+#function that reads the .json file containing the plateaus
 def get_plateaus():
-    f = open("plateaus.json")
+    f = open("/afs/cern.ch/user/j/jcapotor/FBG_TMS/ana_tools/plateaus.json")
     plateaus = json.load(f)
     return plateaus
 
+#function to downsample data based on timestamp values
 def downsample_data(df, bin=1):
     df["Timestamp"] = df["Timestamp"].apply(lambda x: np.round(x/bin, 0))
     downsampled = []
