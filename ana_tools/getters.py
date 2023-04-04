@@ -3,6 +3,7 @@ import pandas as pd
 import h5py
 from tqdm import tqdm
 import json
+import glob
 
 #function to get the raw data processed into .hdf5 files 
 def get_raw_data(
@@ -36,6 +37,8 @@ def get_processed_data(
 
 #function that reads the .json file containing the plateaus
 def get_plateaus():
+    path = glob.glob("../../../plateaus.json", recursive=False)
+    print(path)
     f = open("/afs/cern.ch/user/j/jcapotor/FBG_TMS/ana_tools/plateaus.json")
     plateaus = json.load(f)
     return plateaus
