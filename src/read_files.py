@@ -101,11 +101,14 @@ def process_spectrums(
                 cnt += 1
                 continue
             cnt += 1
+            if cnt % 100 == True:
+                print(cnt)
+                print(sweep)
         except:
             print("Finished at event: " + str(cnt))
             persistentRead = False
             data = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in data.items() ]))
-            data["Timestamp"] = data["Timestamp"].apply(utils.time_to_seconds)
+            data["Timestamp"] = data["Timestamp"].apply(setters.time_to_seconds)
             data = setters.add_polarisation_mask(data)
             data_p = data.loc[(data["PolMask"] == "p")].reset_index(drop=True)
             data_s = data.loc[(data["PolMask"] == "s")].reset_index(drop=True)
@@ -142,7 +145,7 @@ def process_peaks(
         chunk.columns = names
         chunk = chunk.reset_index(drop=True)
         # chunk_p, chunk_s = manage_data.process_data(chunk)
-        chunk["Timestamp"] = chunk["Timestamp"].apply(manage_data.time_to_seconds)
+        chunk["Timestamp"] = chunk["Timestamp"].apply(setters.time_to_seconds)
         chunk = setters.add_polarisation_mask(chunk)
         chunk_p = chunk.loc[(chunk["PolMask"]=="p")].reset_index(drop=True)
         chunk_s = chunk.loc[(chunk["PolMask"]=="s")].reset_index(drop=True)
@@ -171,7 +174,7 @@ def process_temperature(
         except:
             continue
     data["Timestamp"] = data["Date"]+ "-" +data["Time"]
-    data["Timestamp"] = data["Timestamp"].apply(utils.time_to_seconds)
+    data["Timestamp"] = data["Timestamp"].apply(setters.time_to_seconds)
     n_file = filename.split("_")[1].split(".")[0]
     data.to_hdf(path_or_buf=path_to_save_folder+"temperature.h5", key="Temp"+str(n_file))
 
@@ -182,6 +185,6 @@ def process_humidity(
     data = pd.read_csv(path_to_data+filename, sep=";", skiprows=1, header=None, decimal=",").astype(float)
     data.columns = ["Timestamp", "ObRH", "RH", "ObT", "T"]
     data["Timestamp"] = data["Timestamp"].apply(lambda x: str(xlrd.xldate_as_datetime(x, 0).date()) + " " + str(xlrd.xldate_as_datetime(x, 0).time()).split(".")[0])
-    data["Timestamp"] = data["Timestamp"].apply(utils.time_to_seconds)
+    data["Timestamp"] = data["Timestamp"].apply(setters.time_to_seconds)
     n_file = filename.split("_")[1].split(".")[0]
     data.to_hdf(path_or_buf=path_to_save_data+"humidity.h5", key="Hum"+n_file)

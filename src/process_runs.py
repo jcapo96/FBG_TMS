@@ -6,10 +6,8 @@ from tables import NaturalNameWarning
 warnings.filterwarnings('ignore', category=NaturalNameWarning)
 import sys
 
-path_to_data = sys.argv[1]
-subfolder = path_to_data.split("/")[8]
-subsubfolder = path_to_data.split("/")[9]
-path_to_save_folder = "/eos/user/j/jcapotor/FBGana/camara_climatica/" + subfolder + "/" + subsubfolder + "/"
+path_to_data = "/eos/user/j/jcapotor/FBGdata/Data/camara_climatica/MarchRuns/20230330/"
+path_to_save_folder = "/eos/user/j/jcapotor/FBGana/camara_climatica/MarchRuns/20230330/"
 print(path_to_save_folder)
 
 print("Processing " + path_to_data)
