@@ -40,3 +40,27 @@ def add_polarisation_mask(data):
             polarisation_mask.append(second_pol)
     data["PolMask"] = polarisation_mask
     return data
+
+def find_zero_derivative_regions(curve, threshold):
+    """
+    Given a list of numbers representing a curve and a threshold for the minimum region length, 
+    returns a list of tuples representing the regions where the derivative of the curve is zero 
+    and has a length above the threshold.
+    Each tuple contains the start and end indices of a region.
+    """
+    zero_regions = []
+    start_idx = None
+    for i in range(len(curve) - 1):
+        if curve[i] == curve[i + 1]:
+            if start_idx is None:
+                start_idx = i
+        elif start_idx is not None:
+            region_length = i - start_idx
+            if region_length >= threshold:
+                zero_regions.append((start_idx, i))
+            start_idx = None
+    if start_idx is not None:
+        region_length = len(curve) - 1 - start_idx
+        if region_length >= threshold:
+            zero_regions.append((start_idx, len(curve) - 1))
+    return zero_regions

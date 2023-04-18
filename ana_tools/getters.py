@@ -44,6 +44,16 @@ def get_plateaus():
     plateaus = json.load(f)
     return plateaus
 
+#function that reads the .json file containing the plateaus
+def get_rtdcal():
+    current_dir = os.path.dirname(os.path.dirname(os.getcwd()))
+    print(current_dir)
+    path = glob.glob(current_dir + "/**/rtd_calib.json", recursive=False)[0]
+    print(path)
+    f = open(path)
+    rtdcal = json.load(f)
+    return rtdcal
+
 #function to downsample data based on timestamp values
 def downsample_data(df, bin=1):
     df["Timestamp"] = df["Timestamp"].apply(lambda x: np.round(x/bin, 0))

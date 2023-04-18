@@ -6,8 +6,8 @@ from tables import NaturalNameWarning
 warnings.filterwarnings('ignore', category=NaturalNameWarning)
 import sys
 
-path_to_data = "/eos/user/j/jcapotor/FBGdata/Data/camara_climatica/MarchRuns/20230330/"
-path_to_save_folder = "/eos/user/j/jcapotor/FBGana/camara_climatica/MarchRuns/20230330/"
+path_to_data = "/eos/user/j/jcapotor/FBGdata/Data/camara_climatica/FebruaryRuns/20230227/"
+path_to_save_folder = "/eos/user/j/jcapotor/FBGana/camara_climatica/FebruaryRuns/20230227/"
 print(path_to_save_folder)
 
 print("Processing " + path_to_data)
@@ -75,7 +75,7 @@ for index, file in list_of_files.iterrows():
             humidity = read_files.process_humidity(
                 path_to_data=path_to_data,
                 filename=filename,
-                path_to_save_data=path_to_save_folder
+                path_to_save_folder=path_to_save_folder
             )
     except:
         print("Failed for file: " + filename)

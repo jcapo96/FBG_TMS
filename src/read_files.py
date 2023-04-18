@@ -180,11 +180,12 @@ def process_temperature(
 
 def process_humidity(
     path_to_data="",
-    filename="", path_to_save_data=""
+    filename="", path_to_save_folder=""
     ):
     data = pd.read_csv(path_to_data+filename, sep=";", skiprows=1, header=None, decimal=",").astype(float)
     data.columns = ["Timestamp", "ObRH", "RH", "ObT", "T"]
-    data["Timestamp"] = data["Timestamp"].apply(lambda x: str(xlrd.xldate_as_datetime(x, 0).date()) + " " + str(xlrd.xldate_as_datetime(x, 0).time()).split(".")[0])
+    data["Timestamp"] = data["Timestamp"].apply(lambda x: str(xlrd.xldate.xldate_as_datetime(x, 0).date()) + " " + str(xlrd.xldate.xldate_as_datetime(x, 0).time()).split(".")[0])
     data["Timestamp"] = data["Timestamp"].apply(setters.time_to_seconds)
-    n_file = filename.split("_")[1].split(".")[0]
-    data.to_hdf(path_or_buf=path_to_save_data+"humidity.h5", key="Hum"+n_file)
+    n_file = str(filename.split("_")[1].split(".")[0])
+    print(data)
+    data.to_hdf(path_or_buf=path_to_save_folder+"humidity.h5", key="Hum"+n_file)
