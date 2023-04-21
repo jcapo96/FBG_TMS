@@ -54,6 +54,15 @@ def get_rtdcal():
     rtdcal = json.load(f)
     return rtdcal
 
+def get_fbgscal():
+    current_dir = os.path.dirname(os.path.dirname(os.getcwd()))
+    print(current_dir)
+    path = glob.glob(current_dir + "/**/fbgs_calib.json", recursive=False)[0]
+    print(path)
+    f = open(path)
+    fbgcal = json.load(f)
+    return fbgcal
+
 #function to downsample data based on timestamp values
 def downsample_data(df, bin=1):
     df["Timestamp"] = df["Timestamp"].apply(lambda x: np.round(x/bin, 0))
