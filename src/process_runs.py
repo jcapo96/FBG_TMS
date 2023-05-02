@@ -6,8 +6,8 @@ from tables import NaturalNameWarning
 warnings.filterwarnings('ignore', category=NaturalNameWarning)
 import sys
 
-path_to_data = "/eos/user/j/jcapotor/FBGdata/Data/camara_climatica/FebruaryRuns/20230227/"
-path_to_save_folder = "/eos/user/j/jcapotor/FBGana/camara_climatica/FebruaryRuns/20230227/"
+path_to_data = "/eos/user/j/jcapotor/FBGdata/Data/LN2_tests/April2023/28042023/"
+path_to_save_folder = "/eos/user/j/jcapotor/FBGana/LN2_tests/April2023/28042023/"
 print(path_to_save_folder)
 
 print("Processing " + path_to_data)
@@ -37,11 +37,15 @@ def get_topology(path_to_data):
 
 #this comes out from the topology file
 channels, n_sensors, wl_positions = get_topology(path_to_data=path_to_data)
+channels=[0]
+n_sensors = [5]
 
 list_of_files = pd.read_csv(path_to_data+"list_of_files.txt", header=None, names=["Filename"])
 print(list_of_files)
 for index, file in list_of_files.iterrows():
     filename = file["Filename"].lower()
+    if "spectrums" in filename:
+        continue
     print(filename)
     try:
         if filename.split("_")[0] == "spectrums":

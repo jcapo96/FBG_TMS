@@ -7,16 +7,11 @@ import numpy as np
 import pandas as pd
 import ROOT
 
-dates = ["20230224",
-        "20230321", "20230322", "20230323", "20230327", "20230328", "20230329"]
+dates = ["28042023"]
 for date in dates:
-    if "202302" in date:
-        path_to_ana = "/eos/user/j/jcapotor/FBGana/camara_climatica/FebruaryRuns/" + date + "/"
-        list_of_files = pd.read_csv("/eos/user/j/jcapotor/FBGana/camara_climatica/FebruaryRuns/"+ date + "/list_of_files.txt",
-                                    header=None, names=["Filename"])
-    if "202303" in date:
-        path_to_ana = "/eos/user/j/jcapotor/FBGana/camara_climatica/MarchRuns/" + date + "/"
-        list_of_files = pd.read_csv("/eos/user/j/jcapotor/FBGana/camara_climatica/MarchRuns/"+ date + "/list_of_files.txt",
+    if "042023" in date:
+        path_to_ana = "/eos/user/j/jcapotor/FBGana/LN2_tests/April2023/" + date + "/"
+        list_of_files = pd.read_csv("/eos/user/j/jcapotor/FBGana/LN2_tests/April2023/"+ date + "/list_of_files.txt",
                                     header=None, names=["Filename"])
     data_list = {}
     for index, file in list_of_files.iterrows():
